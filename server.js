@@ -59,3 +59,11 @@ app.use(express.static(path.join(__dirname)));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+const path = require('path');
+
+// ให้บริการไฟล์ Static และแสดงหน้า index.html เป็นหน้าแรก
+app.use(express.static(path.join(__dirname)));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
