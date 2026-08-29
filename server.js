@@ -8,7 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: '*', methods: ['GET', 'POST'] }));
 
-// ตรวจสอบว่ามีโฟลเดอร์ dist หรือไม่ ถ้าไม่มีให้ใช้โฟลเดอร์ปัจจุบันแทนเพื่อกันพัง
 const distPath = path.join(__dirname, 'dist');
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
@@ -37,7 +36,8 @@ app.get('/api/users', (req, res) => {
   res.status(200).json(usersDatabase);
 });
 
-app.get('*', (req, res) => {
+// แก้จาก '*' เป็น '/*' เพื่อรองรับ Express v5
+app.get('/*', (req, res) => {
   const indexPath = path.join(distPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
