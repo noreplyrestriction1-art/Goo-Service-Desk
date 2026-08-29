@@ -2,13 +2,19 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: '*', methods: ['GET', 'POST'] }));
 
-// เสิร์ฟไฟล์จากโฟลเดอร์ dist ที่เพิ่ง build
-app.use(express.static(path.join(__dirname, 'dist')));
+// ตรวจสอบว่ามีโฟลเดอร์ dist หรือไม่ ถ้าไม่มีให้ใช้โฟลเดอร์ปัจจุบันแทนเพื่อกันพัง
+const distPath = path.join(__dirname, 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+} else {
+  app.use(express.static(__dirname));
+}
 
 const usersDatabase = [];
 
@@ -31,9 +37,13 @@ app.get('/api/users', (req, res) => {
   res.status(200).json(usersDatabase);
 });
 
-// ส่งไฟล์ index.html กลับไปทุกเส้นทางเพื่อให้ React ทำงานต่อได้
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  const indexPath = path.join(distPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  }
 });
 
 const PORT = process.env.PORT || 5000;
