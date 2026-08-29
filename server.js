@@ -36,8 +36,8 @@ app.get('/api/users', (req, res) => {
   res.status(200).json(usersDatabase);
 });
 
-// แก้จาก '*' เป็น '/*' เพื่อรองรับ Express v5
-app.get('/*', (req, res) => {
+// ใช้ Regular Expression สำหรับ Express v5 เพื่อป้องกัน PathError
+app.get(/(.*)/, (req, res) => {
   const indexPath = path.join(distPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
