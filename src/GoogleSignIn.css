@@ -1,0 +1,227 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f0f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #1f1f1f;
+}
+
+.google-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 24px 0;
+}
+
+.google-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 28px;
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+}
+
+.google-logo {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 400;
+  margin: 0 0 8px 0;
+  text-align: left;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #444746;
+  margin: 0 0 32px 0;
+  text-align: left;
+}
+
+.prompt-text {
+  font-size: 14px;
+  color: #444746;
+  margin: 16px 0 24px 0;
+  text-align: left;
+}
+
+/* Material Floating Input */
+.material-input {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.material-input input {
+  width: 100%;
+  height: 56px;
+  padding: 16px;
+  font-size: 16px;
+  border: 1px solid #747775;
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  background: transparent;
+}
+
+.material-input input:focus {
+  border-color: #0b57d0;
+  border-width: 2px;
+}
+
+.material-input label {
+  position: absolute;
+  left: 16px;
+  top: 18px;
+  font-size: 16px;
+  color: #444746;
+  pointer-events: none;
+  transition: 0.15s ease all;
+  background: #ffffff;
+  padding: 0 4px;
+}
+
+.material-input input:focus ~ label,
+.material-input input:not(:placeholder-shown) ~ label {
+  top: -8px;
+  font-size: 12px;
+  color: #0b57d0;
+}
+
+/* Account Chip Badge */
+.account-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border: 1px solid #747775;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.chip-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.chip-placeholder {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #0b57d0;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chip-email {
+  font-size: 14px;
+  color: #1f1f1f;
+  font-weight: 500;
+}
+
+/* Links & Checkboxes */
+.forgot-link {
+  text-align: left;
+  margin-top: 8px;
+}
+
+.forgot-link a, .terms-text a {
+  color: #0b57d0;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.terms-text {
+  font-size: 14px;
+  color: #444746;
+  text-align: left;
+  margin: 32px 0 40px 0;
+  line-height: 1.4;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 32px 0;
+}
+
+.checkbox-row label {
+  font-size: 14px;
+  color: #1f1f1f;
+}
+
+/* Buttons */
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: #0b57d0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+.btn-contained {
+  background: #0b57d0;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-contained:hover {
+  background: #0842a0;
+}
+
+/* Footer */
+.google-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 450px;
+  margin-top: 24px;
+  font-size: 12px;
+  color: #444746;
+}
+
+.footer-links {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-links a {
+  color: #444746;
+  text-decoration: none;
+}
+
+/* Animation */
+.fade-in {
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
