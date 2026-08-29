@@ -46,3 +46,8 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
+// เพิ่มเส้นทางสำหรับหน้าแรก
+app.get('/', (req, res) => {
+  res.send('Welcome to Google Support API Server');
+});
+
