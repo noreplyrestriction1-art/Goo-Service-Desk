@@ -51,3 +51,11 @@ app.get('/', (req, res) => {
   res.send('Welcome to Google Support API Server');
 });
 
+const path = require('path');
+
+// ให้บริการไฟล์ Static จากโฟลเดอร์โปรเจกต์ (หรือโฟลเดอร์ src)
+app.use(express.static(path.join(__dirname)));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
