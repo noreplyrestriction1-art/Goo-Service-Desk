@@ -6,7 +6,6 @@ export default function GoogleSignIn() {
     <div className="signin-container">
       <div className="signin-card">
         <div className="profile-section" style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <img 
 <div className="profile-section" style={{ textAlign: 'center', marginBottom: '20px' }}>
   <img src="/bird.jpg" alt="Profile" />
 </div>
