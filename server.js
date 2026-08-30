@@ -1,52 +1,58 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const cors = require('cors');
-const path = require('path');
-const fs = require('fs');
+const mongoose = require('mongoose');
 
 const app = express();
+const PORT = process.env.PORT || 10000;
+
 app.use(express.json());
-app.use(cors({ origin: '*', methods: ['GET', 'POST'] }));
+app.use(express.urlencoded({ extended: true }));
 
-const distPath = path.join(__dirname, 'dist');
-if (fs.existsSync(distPath)) {
-  app.use(express.static(distPath));
-} else {
-  app.use(express.static(__dirname));
-}
+const MONGODB_URI = process.env.MONGODB_URI;
 
-const usersDatabase = [];
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+
+app.get('/', (req, res) => {
+  res.send('Server is running and connected to MongoDB!');
+});
 
 app.post('/api/register', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
+    const { username, password } = req.body;
+    
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = { id: Date.now(), email, password: hashedPassword, createdAt: new Date() };
-    usersDatabase.push(newUser);
-    res.status(200).json({ success: true, message: 'บันทึกข้อมูลเรียบร้อยแล้ว' });
-  } catch (error) {
-    res.status(500).json({ message: 'เกิดข้อผิดพลาดทางเซิร์ฟเวอร์' });
+
+    const newUser = new User({ username, password });
+    await newUser.save();
+
+    res.status(201).json({ message: 'User registered successfully!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-app.get('/api/users', (req, res) => {
-  res.status(200).json(usersDatabase);
-});
-
-// ใช้ Regular Expression สำหรับ Express v5 เพื่อป้องกัน PathError
-app.get(/(.*)/, (req, res) => {
-  const indexPath = path.join(distPath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.sendFile(path.join(__dirname, 'index.html'));
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({}, '-password');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
