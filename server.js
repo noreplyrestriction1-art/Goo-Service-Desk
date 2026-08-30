@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('.'));
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -74,7 +75,7 @@ app.get('/', (req, res) => {
         <h1>M J</h1>
         
         <div class="account-box">
-          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80" alt="avatar">
+          <img src="/avatar.jpg" alt="avatar">
           <span>taiphak25442001@gmail.com</span>
           <span style="margin-left: 6px; font-size: 10px; color: #5f6368;">▼</span>
         </div>
