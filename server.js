@@ -14,8 +14,8 @@ mongoose.connect(MONGODB_URI)
   .catch(err => console.error('MongoDB connection error:', err));
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  password: { type: String, required: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -36,15 +36,15 @@ app.get('/', (req, res) => {
         input { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; }
         button { background: #1a73e8; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; cursor: pointer; }
         ul { padding-left: 20px; margin-top: 20px; }
-        li { margin-bottom: 8px; }
+        li { margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 6px; }
       </style>
     </head>
     <body>
       <div class="container">
-        <h1>สมัครสมาชิก</h1>
+        <h1>เพิ่มข้อมูลผู้ใช้</h1>
         <form id="regForm">
-          <input type="text" id="username" placeholder="ชื่อผู้ใช้" required>
-          <input type="password" id="password" placeholder="รหัสผ่าน" required>
+          <input type="text" id="name" placeholder="ชื่อ-นามสกุล" required>
+          <input type="email" id="email" placeholder="อีเมล" required>
           <button type="submit">บันทึกข้อมูล</button>
         </form>
 
@@ -63,7 +63,7 @@ app.get('/', (req, res) => {
               return;
             }
             list.innerHTML = data.map(user => 
-              '<li><strong>' + user.username + '</strong> <small style="color:#666;">(' + new Date(user.createdAt).toLocaleString() + ')</small></li>'
+              '<li><strong>' + user.name + '</strong> (' + user.email + ') <br><small style="color:#666;">' + new Date(user.createdAt).toLocaleString() + '</small></li>'
             ).join('');
           } catch (err) {
             document.getElementById('userList').innerHTML = '<li>เกิดข้อผิดพลาดในการโหลดข้อมูล</li>';
@@ -72,13 +72,13 @@ app.get('/', (req, res) => {
 
         document.getElementById('regForm').addEventListener('submit', async (e) => {
           e.preventDefault();
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
 
           const res = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ name, email })
           });
 
           if (res.ok) {
@@ -99,8 +99,8 @@ app.get('/', (req, res) => {
 
 app.post('/api/register', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const newUser = new User({ username, password });
+    const { name, email } = req.body;
+    const newUser = new User({ name, email });
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully!', user: newUser });
   } catch (error) {
