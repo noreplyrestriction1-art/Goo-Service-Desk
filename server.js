@@ -15,8 +15,8 @@ mongoose.connect("mongodb+srv://Yeentai1234:taiphak1234@cluster0.slar0cb.mongodb
 // เปิดใช้งานให้ Express อ่านไฟล์หน้าบ้านจากโฟลเดอร์ dist
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// แก้ไขเครื่องหมาย wildcard สำหรับ Express 5 เป็น '/*'
-app.get('/*', (req, res) => {
+// ใช้ Middleware ดักทุกเส้นทางสำหรับ Single Page Application โดยไม่ใช้ wildcard ผิดรูปแบบ
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
