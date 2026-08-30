@@ -15,26 +15,26 @@ mongoose.connect(MONGODB_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// สร้าง Schema และ Model สำหรับเก็บข้อมูลผู้ใช้
+// สร้าง Schema และ Model สำหรับเก็บข้อมูลผู้ใช้ (รับ email และ password)
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
+  email: { type: String, required: true },
   password: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 
 const User = mongoose.model('User', userSchema);
 
-// API สำหรับสมัครสมาชิก
+// API สำหรับสมัครสมาชิกและบันทึกข้อมูล
 app.post('/api/register', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'ชื่อผู้ใช้นี้ถูกใช้งานแล้ว' });
+      return res.status(400).json({ error: 'อีเมลนี้ถูกใช้งานแล้ว' });
     }
 
-    const newUser = new User({ username, password });
+    const newUser = new User({ email, password });
     await newUser.save();
 
     res.status(201).json({ message: 'สมัครสมาชิกสำเร็จ!' });
@@ -57,7 +57,7 @@ app.get('/api/users', async (req, res) => {
 // ตั้งค่าให้ Express เสิร์ฟไฟล์หน้าบ้านจากโฟลเดอร์ build ของ Vite (dist)
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// ใช้ RegExp ดักทุกเส้นทางเพื่อรองรับ Express เวอร์ชั่นล่าสุดอย่างไร้ปัญหา
+// ใช้ RegExp ดักทุกเส้นทางเพื่อรองรับ Single Page Application
 app.get(/(.*)/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
