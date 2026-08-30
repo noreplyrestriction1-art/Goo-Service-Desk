@@ -26,8 +26,8 @@ export const RegistrationForm = () => {
     setIsLoading(true);
 
     try {
-      // ส่งข้อมูลไปยัง Backend
-      await fetch /api/register', {
+      // ส่งข้อมูลไปยัง Backend ด้วย Relative Path
+      await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
