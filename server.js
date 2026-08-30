@@ -57,8 +57,8 @@ app.get('/api/users', async (req, res) => {
 // ตั้งค่าให้ Express เสิร์ฟไฟล์หน้าบ้านจากโฟลเดอร์ build ของ Vite (dist)
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// แก้ไขเส้นทาง catch-all เป็น '/*' เพื่อรองรับ Express เวอร์ชั่นล่าสุด
-app.get('/*', (req, res) => {
+// ใช้ RegExp ดักทุกเส้นทางเพื่อรองรับ Express เวอร์ชั่นล่าสุดอย่างไร้ปัญหา
+app.get(/(.*)/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
