@@ -7,8 +7,7 @@ const PORT = process.env.PORT || 10000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// เชื่อมต่อ MongoDB (ดึงจาก Environment Variable หรือใส่ URI ของคุณ)
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority';
+const MONGO_URI = 'mongodb+srv://Yeentai1234:taiphak1234@cluster0.slar0cb.mongodb.net/users?retryWrites=true&w=majority&appName=Cluster0';
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
@@ -22,7 +21,6 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// API สำหรับบันทึกข้อมูลผู้ใช้
 app.post('/api/users', async (req, res) => {
   try {
     const { email, password } = req.body;
