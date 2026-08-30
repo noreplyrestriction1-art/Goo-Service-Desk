@@ -5,9 +5,14 @@ export default function GoogleSignIn() {
   return (
     <div className="signin-container">
       <div className="signin-card">
-        <div className="profile-section" style={{ textAlign: 'center', marginBottom: '20px' }}>
 <div className="profile-section" style={{ textAlign: 'center', marginBottom: '20px' }}>
-  <img src="/bird.jpg" alt="Profile" />
+  <img 
+    src="/bird.jpg" 
+    alt="Profile" 
+    style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} 
+  />
+  <h2>ไตรภาค</h2>
+  <p>taiphak25442001@gmail.com</p>
 </div>
 
             alt="Profile" 
