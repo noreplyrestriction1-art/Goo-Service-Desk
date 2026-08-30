@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { GoogleSignIn } from './GoogleSignIn';
+import GoogleSignIn from './GoogleSignIn';
 import { Dashboard } from './Dashboard';
 
 export function App() {
