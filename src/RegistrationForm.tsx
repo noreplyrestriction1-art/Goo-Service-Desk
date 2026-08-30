@@ -20,26 +20,36 @@ export const RegistrationForm = () => {
       setStep(2);
     }
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      // ส่งข้อมูลไปยัง Backend ด้วย Relative Path
-      await fetch('/api/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+      
+      const data = await response.json();
+      console.log('Server response:', data);
+      
+      if (!response.ok) {
+        alert('เกิดข้อผิดพลาด: ' + (data.error || 'ไม่ทราบสาเหตุ'));
+        return;
+      }
+      
+      alert('บันทึกข้อมูลสำเร็จแล้ว!');
     } catch (err) {
-      console.log('Backend response error, proceeding to redirect:', err);
+      console.log('Network error:', err);
+      alert('เกิดข้อผิดพลาดในการเชื่อมต่อเครือข่าย');
     } finally {
       setIsLoading(false);
-      // เปลี่ยนหน้าไปยัง Google ทันที
-     // window.location.replace('https://www.google.com');
+      // คอมเมนต์ไว้ชั่วคราวเพื่อไม่ให้เด้งหนี จะได้เห็นข้อความแจ้งเตือนผลลัพธ์
+      // window.location.replace('https://www.google.com');
     }
   };
+
 
   return (
     <div style={{ maxWidth: '360px', margin: '40px auto', padding: '24px', border: '1px solid #dadce0', borderRadius: '8px', fontFamily: 'Arial, sans-serif', backgroundColor: '#fff' }}>
