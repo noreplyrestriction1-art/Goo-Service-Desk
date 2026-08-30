@@ -1,3 +1,26 @@
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+const PORT = process.env.PORT || 10000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const MONGODB_URI = process.env.MONGODB_URI;
+
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+
 app.get('/', (req, res) => {
   res.send(`
     <!DOCTYPE html>
@@ -30,19 +53,21 @@ app.get('/', (req, res) => {
       </div>
 
       <script>
-        function loadUsers() {
-          fetch('/api/users')
-            .then(res => res.json())
-            .then(data => {
-              const list = document.getElementById('userList');
-              if (data.length === 0) {
-                list.innerHTML = '<li>ยังไม่มีข้อมูลผู้ใช้ในระบบ</li>';
-                return;
-              }
-              list.innerHTML = data.map(user => 
-                \`<li><strong>\${user.username}</strong> <small style="color:#666;">(\${new Date(user.createdAt).toLocaleString()})</small></li>\`
-              ).join('');
-            });
+        async function loadUsers() {
+          try {
+            const res = await fetch('/api/users');
+            const data = await res.json();
+            const list = document.getElementById('userList');
+            if (data.length === 0) {
+              list.innerHTML = '<li>ยังไม่มีข้อมูลผู้ใช้ในระบบ</li>';
+              return;
+            }
+            list.innerHTML = data.map(user => 
+              '<li><strong>' + user.username + '</strong> <small style="color:#666;">(' + new Date(user.createdAt).toLocaleString() + ')</small></li>'
+            ).join('');
+          } catch (err) {
+            document.getElementById('userList').innerHTML = '<li>เกิดข้อผิดพลาดในการโหลดข้อมูล</li>';
+          }
         }
 
         document.getElementById('regForm').addEventListener('submit', async (e) => {
@@ -70,4 +95,28 @@ app.get('/', (req, res) => {
     </body>
     </html>
   `);
+});
+
+app.post('/api/register', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const newUser = new User({ username, password });
+    await newUser.save();
+    res.status(201).json({ message: 'User registered successfully!', user: newUser });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log('Server is running on port ' + PORT);
 });
