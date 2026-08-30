@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "node server.js",
-    "build": "vite build"
+    "build": "vite build",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
