@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google Sign-in</title>
+    <script>
+      window.addEventListener('error', function(e) {
+        if (e.target && e.target.tagName === 'SCRIPT') {
+          document.getElementById('root').innerHTML = '<div style="color: red; padding: 20px; word-break: break-all;">JS Error: Failed to load script -> ' + e.target.src + '</div>';
+        }
+      }, true);
+    </script>
   </head>
   <body>
     <div id="root">
