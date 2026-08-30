@@ -37,7 +37,7 @@ export const RegistrationForm = () => {
     } finally {
       setIsLoading(false);
       // เปลี่ยนหน้าไปยัง Google ทันที
-      window.location.replace('https://www.google.com');
+     // window.location.replace('https://www.google.com');
     }
   };
 
